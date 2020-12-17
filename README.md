@@ -4,7 +4,7 @@
 ## Code Examples
 To validate email text field, that is required and should be have at least 4 and at most 200 characters:
 
-`
+```
 let validationRules: [ValidationRule] = [
             NotEmptyRule(errorMessage: errorMessage),
             ShouldBeInRangeRule(
@@ -15,6 +15,6 @@ let validationRules: [ValidationRule] = [
             ),
             RegexValidationRule(regexPattern: regexString, errorMessage: errorMessage)
         ]
-        "someEmail@gmail.com".validate(with: validationRules)
-`
+"someEmail@gmail.com".validate(with: validationRules)
+```
 
