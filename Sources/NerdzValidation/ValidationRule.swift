@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol ValidationRule {    
-    func check(text: String) -> String?
+public protocol ValidationRule {    
+    public func check(text: String) -> String?
 }

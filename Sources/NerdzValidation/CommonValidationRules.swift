@@ -7,26 +7,26 @@
 
 import Foundation
 
-struct NotEmptyRule: ValidationRule {
+public struct NotEmptyRule: ValidationRule {
     private var errorMessage: String
     
-    init(errorMessage: String) {
+    public init(errorMessage: String) {
         self.errorMessage = errorMessage
     }
     
-    func check(text: String) -> String? {
+    public func check(text: String) -> String? {
         return text.isEmpty ? errorMessage : nil
     }
 }
 
-struct ShouldBeInRangeRule: ValidationRule {
+public struct ShouldBeInRangeRule: ValidationRule {
     private var lowerBoundErrorMessage: String
     private var upperBoundErrorMessage: String
     
     private(set) var lowerBound: Int
     private(set) var upperBound: Int
     
-    func check(text: String) -> String? {
+    public func check(text: String) -> String? {
         var result: String?
         
         if text.utf16.count < lowerBound {
@@ -38,7 +38,7 @@ struct ShouldBeInRangeRule: ValidationRule {
         return result
     }
     
-    init(lowerBoundErrorMessage: String, upperBoundErrorMessage: String, lowerBound: Int, upperBound: Int) {
+    public init(lowerBoundErrorMessage: String, upperBoundErrorMessage: String, lowerBound: Int, upperBound: Int) {
         self.upperBoundErrorMessage = upperBoundErrorMessage
         self.lowerBoundErrorMessage = lowerBoundErrorMessage
         self.lowerBound = lowerBound
@@ -46,16 +46,16 @@ struct ShouldBeInRangeRule: ValidationRule {
     }
 }
 
-struct RegexValidationRule: ValidationRule {
+public struct RegexValidationRule: ValidationRule {
     private(set) var regexPattern: String
     private(set) var errorMessage: String
     
-    init(regexPattern: String, errorMessage: String) {
+    public init(regexPattern: String, errorMessage: String) {
         self.regexPattern = regexPattern
         self.errorMessage = errorMessage
     }
     
-    func check(text: String) -> String? {
+    public func check(text: String) -> String? {
         var result: String?
         do {
             let regex = try NSRegularExpression(pattern: regexPattern)

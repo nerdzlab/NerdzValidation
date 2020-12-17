@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct ValidationResult {
-    var errorMessage: String? = nil
+public struct ValidationResult {
+    public var errorMessage: String? = nil
     
-    var isValid: Bool {
+    public var isValid: Bool {
         return errorMessage == nil
     }
 }
