@@ -9,11 +9,10 @@ import Foundation
 
 public class RulesContainer {
     
-    private var rules: [ValidationRule]
+    private var rules: [ValidationRule] = []
     private let text: String
     
-    init(initialRule: ValidationRule? = nil, text: String) {
-        rules = initialRule.flatMap { [$0] } ?? []
+    init(text: String) {
         self.text = text
     }
     

@@ -9,8 +9,8 @@ import Foundation
 
 public class LengthRangeValidationRule: ValidationRule {
     
-    public let lowerBoundMessage: String
-    public let upperBoundMessage: String
+    public let lowerBoundMessage: String?
+    public let upperBoundMessage: String?
     
     public let lowerBound: Int?
     public let upperBound: Int?
@@ -20,10 +20,10 @@ public class LengthRangeValidationRule: ValidationRule {
         self.upperBound = upperBound
         
         self.upperBoundMessage = upperBoundMessage ??
-            "String should have less than \(upperBound) characters"
+            upperBound.flatMap { "String should have less than \($0) characters" }
             
         self.lowerBoundMessage = lowerBoundMessage ??
-            "String should have more than \(lowerBound) characters"
+            lowerBound.flatMap { "String should have more than \($0) characters" }
     }
     
     public func validateText(_ text: String) -> ValidationResult  {
