@@ -9,12 +9,8 @@ import Foundation
 
 public extension String {
     
-    var notEmpty: Bool {
-        NotEmptyValidationRule().validateText(self).isValid
-    }
-    
-    var isEmail: Bool {
-        IsEmailValidationRule().validateText(self).isValid
+    func validate(with rules: ValidationRule..., message: String? = nil) -> ValidationResult {
+        CombinedValidationRule(rules: rules, message: message).validateText(self)
     }
     
     func notEmpty(message: String? = nil) -> RulesContainer {
@@ -22,7 +18,11 @@ public extension String {
     }
     
     func isEmail(message: String? = nil) -> RulesContainer {
-        RulesContainer(initialRule: NotEmptyValidationRule(message: message), text: self)
+        RulesContainer(initialRule: IsEmailValidationRule(message: message), text: self)
+    }
+    
+    func isPhone(message: String? = nil) -> RulesContainer {
+        RulesContainer(initialRule: IsPhoneValidationRule(message: message), text: self)
     }
     
     func validByClosure(_ closure: @escaping ByClosureValidationRule.Closure, message: String?) -> RulesContainer {

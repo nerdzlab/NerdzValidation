@@ -27,7 +27,12 @@ public class RulesContainer {
     }
     
     public func isEmail(message: String? = nil) -> Self {
-        rules.append(NotEmptyValidationRule(message: message))
+        rules.append(IsEmailValidationRule(message: message))
+        return self
+    }
+    
+    public func isPhone(message: String? = nil) -> Self {
+        rules.append(IsPhoneValidationRule(message: message))
         return self
     }
     
