@@ -7,10 +7,25 @@
 
 import Foundation
 
-public struct ValidationResult {
-    public var errorMessage: String? = nil
+public enum ValidationResult {
+    case valid
+    case invalid(message: String? = nil)
     
     public var isValid: Bool {
-        return errorMessage == nil
+        if case .valid = self {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
+    public var message: String? {
+        if case .invalid(let message) = self {
+            return message
+        }
+        else {
+            return nil
+        }
     }
 }
