@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol ValidationRule {    
-    func validateText(_ text: String) -> ValidationResult
+    func validate(_ text: String) -> ValidationResult
 }

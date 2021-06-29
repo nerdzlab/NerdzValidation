@@ -23,7 +23,7 @@ public class ByClosureValidationRule: ValidationRule {
         self.message = message ?? Constants.defaultMessage
     }
     
-    public func validateText(_ text: String) -> ValidationResult {
+    public func validate(_ text: String) -> ValidationResult {
         if closure(text) {
             return .valid
         }

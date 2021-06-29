@@ -17,7 +17,7 @@ public class RegexValidationRule: ValidationRule {
         self.message = message ?? "String do not match regular expression: `\(pattern)`"
     }
     
-    public func validateText(_ text: String) -> ValidationResult {
+    public func validate(_ text: String) -> ValidationResult {
         do {
             let regex = try NSRegularExpression(pattern: pattern)
             let results = regex.matches(in: text, range: NSRange(location: 0, length: text.utf16.count))

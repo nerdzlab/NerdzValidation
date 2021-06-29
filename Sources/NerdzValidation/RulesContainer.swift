@@ -17,42 +17,40 @@ public class RulesContainer {
     }
     
     public func validate() -> ValidationResult {
-        CombinedValidationRule(rules: rules).validateText(text)
+        CombinedValidationRule(rules: rules).validate(text)
+    }
+    
+    public func validate(with rule: ValidationRule, message: String? = nil) -> Self {
+        rules.append(rule)
+        return self
     }
     
     public func notEmpty(message: String? = nil) -> Self {
-        rules.append(NotEmptyValidationRule(message: message))
-        return self
+        validate(with: NotEmptyValidationRule(message: message))
     }
     
     public func isEmail(message: String? = nil) -> Self {
-        rules.append(IsEmailValidationRule(message: message))
-        return self
+        validate(with: IsEmailValidationRule(message: message))
     }
     
     public func isPhone(message: String? = nil) -> Self {
-        rules.append(IsPhoneValidationRule(message: message))
-        return self
+        validate(with: IsPhoneValidationRule(message: message))
     }
     
     public func validByClosure(_ closure: @escaping ByClosureValidationRule.Closure, message: String?) -> Self {
-        rules.append(ByClosureValidationRule(closure: closure, message: message))
-        return self
+        validate(with: ByClosureValidationRule(closure: closure, message: message))
     }
     
     public func matchRegex(_ regex: String, message: String? = nil) -> Self {
-        rules.append(RegexValidationRule(pattern: regex, message: message))
-        return self
+        validate(with: RegexValidationRule(pattern: regex, message: message))
     }
     
     public func lengthLessThan(_ value: Int, message: String? = nil) -> Self {
-        rules.append(LengthRangeValidationRule(upperBound: value, upperBoundMessage: message))
-        return self
+        validate(with: LengthRangeValidationRule(upperBound: value, upperBoundMessage: message))
     }
     
     public func lengthHigherThan(_ value: Int, message: String? = nil) -> Self {
-        rules.append(LengthRangeValidationRule(lowerBound: value, lowerBoundMessage: message))
-        return self
+        validate(with: LengthRangeValidationRule(lowerBound: value, lowerBoundMessage: message))
     }
     
     public func lengthInRange(
@@ -68,7 +66,6 @@ public class RulesContainer {
             upperBoundMessage: upperBoundMessage
         )
         
-        rules.append(rule)
-        return self
+        validate(with: rule)
     }
 }

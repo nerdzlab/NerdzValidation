@@ -18,13 +18,13 @@ public class CombinedValidationRule: ValidationRule {
         self.message = message
     }
     
-    public func validateText(_ text: String) -> ValidationResult {
-        if let message = message, rules.contains(where: { !$0.validateText(text).isValid }) {
+    public func validate(_ text: String) -> ValidationResult {
+        if let message = message, rules.contains(where: { !$0.validate(text).isValid }) {
             return .invalid(message: message)
         }
         else {
             let messages: [String] = rules.compactMap {
-                let result = $0.validateText(text)
+                let result = $0.validate(text)
                 
                 if case .invalid(let message) = result {
                     return message

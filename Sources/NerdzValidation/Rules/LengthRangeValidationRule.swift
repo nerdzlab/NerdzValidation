@@ -26,7 +26,7 @@ public class LengthRangeValidationRule: ValidationRule {
             lowerBound.flatMap { "String should have more than \($0) characters" }
     }
     
-    public func validateText(_ text: String) -> ValidationResult  {
+    public func validate(_ text: String) -> ValidationResult  {
         if let bound = lowerBound, text.utf16.count < bound {
             return .invalid(message: lowerBoundMessage)
         }

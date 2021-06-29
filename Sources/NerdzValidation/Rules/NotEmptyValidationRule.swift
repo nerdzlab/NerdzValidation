@@ -18,7 +18,7 @@ public class NotEmptyValidationRule: ValidationRule {
         self.message = message ?? Constants.defaultMessage
     }
     
-    public func validateText(_ text: String) -> ValidationResult {
+    public func validate(_ text: String) -> ValidationResult {
         return text.isEmpty ? .invalid(message: message) : .valid
     }
 }
