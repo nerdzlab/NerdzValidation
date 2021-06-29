@@ -66,6 +66,6 @@ public class RulesContainer {
             upperBoundMessage: upperBoundMessage
         )
         
-        validate(with: rule)
+        return validate(with: rule)
     }
 }
