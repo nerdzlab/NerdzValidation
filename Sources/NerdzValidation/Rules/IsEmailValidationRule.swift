@@ -10,7 +10,7 @@ import Foundation
 public class IsEmailValidationRule: RegexValidationRule {
     
     private enum Constants {
-        static let pattern = "[A-Z0-9a-z]+([._%+-]{1}[A-Z0-9a-z]+)*@[A-Z0-9a-z]+([.-]{1}[A-Z0-9a-z]+)*(\\.[A-Za-z]{2,4}){0,1}"
+        static let pattern = "^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$"
     }
     
     public init(message: String? = nil) {
