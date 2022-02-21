@@ -7,17 +7,26 @@
 
 import Foundation
 
+/// Class that represents validation rule that can contain another rules inside it.
 public class CombinedValidationRule: ValidationRule {
     
+    /// An array or type `ValidationRule`, contains all rules to validate text.
     public let rules: [ValidationRule]
     
     private let message: String?
     
+    /// Initialization method.
+    /// - Parameters:
+    ///   - rules: An array of type `ValidationRule`.
+    ///   - message: Optional invalid validation message.
     public init(rules: [ValidationRule], message: String? = nil) {
         self.rules = rules
         self.message = message
     }
     
+    /// Methods that validates given text.
+    /// - Parameter text: Given text to validate.
+    /// - Returns: Either `.valid` or   `.invalid` with optional message depending on the validation result.
     public func validate(_ text: String) -> ValidationResult {
         if let message = message, rules.contains(where: { !$0.validate(text).isValid }) {
             return .invalid(message: message)

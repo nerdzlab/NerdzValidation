@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Class that describes validation extension data.
 public class NZValidationExtensionData<Base> {
     
     public let base: Base
@@ -16,6 +17,7 @@ public class NZValidationExtensionData<Base> {
     }
 }
 
+/// Protocol that describes extended type and NZ extensions.
 public protocol NZValidationExtensionCompatible {
     /// Extended type
     associatedtype NZExtensionBase
@@ -27,6 +29,7 @@ public protocol NZValidationExtensionCompatible {
     var nzv: NZValidationExtensionData<NZExtensionBase> { get }
 }
 
+// Protocol that describes NZ extensions and reactive extensions.
 extension NZValidationExtensionCompatible {
     
     /// NZ extensions.
