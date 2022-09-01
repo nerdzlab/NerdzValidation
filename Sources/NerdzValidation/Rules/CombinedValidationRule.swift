@@ -10,11 +10,12 @@ import Foundation
 public class CombinedValidationRule: ValidationRule {
     
     public let rules: [ValidationRule]
-    
+    public let shouldCombineErrorMessages: Bool
     private let message: String?
     
-    public init(rules: [ValidationRule], message: String? = nil) {
+    public init(rules: [ValidationRule], shouldCombineErrorMessages: Bool, message: String? = nil) {
         self.rules = rules
+        self.shouldCombineErrorMessages = shouldCombineErrorMessages
         self.message = message
     }
     
@@ -37,7 +38,7 @@ public class CombinedValidationRule: ValidationRule {
             if messages.isEmpty {
                 return .valid
             }
-            else if let message = messages.first, messages.count == 1 {
+            else if let message = messages.first, messages.count == 1 || !shouldCombineErrorMessages {
                 return .invalid(message: message)
             }
             else {
