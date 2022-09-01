@@ -10,8 +10,8 @@ import Foundation
 extension String: NZValidationExtensionCompatible { }
 
 public extension NZValidationExtensionData where Base == String {
-    func validate(with rules: ValidationRule..., message: String? = nil) -> ValidationResult {
-        CombinedValidationRule(rules: rules, message: message).validate(base)
+    func validate(with rules: ValidationRule..., message: String? = nil, shouldCombineErrorMessages: Bool = true) -> ValidationResult {
+        CombinedValidationRule(rules: rules, shouldCombineErrorMessages: shouldCombineErrorMessages, message: message).validate(base)
     }
     
     func combine() -> RulesContainer {
