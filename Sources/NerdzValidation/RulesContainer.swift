@@ -16,8 +16,8 @@ public class RulesContainer {
         self.text = text
     }
     
-    public func validate() -> ValidationResult {
-        CombinedValidationRule(rules: rules).validate(text)
+    public func validate(with message: String? = nil) -> ValidationResult {
+        CombinedValidationRule(rules: rules, message: message).validate(text)
     }
     
     public func validate(with rule: ValidationRule, message: String? = nil) -> Self {
