@@ -10,7 +10,7 @@ import Foundation
 public class IsPhoneValidationRule: RegexValidationRule {
     
     private enum Constants {
-        static let pattern = "^[0-9+]{0,1}+[0-9]{5,16}$"
+        static let pattern = "^[0-9+]{0,1}+[0-9\ \(\)]{5,30}$"
     }
     
     public init(message: String? = nil) {
