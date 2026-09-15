@@ -27,6 +27,7 @@ print(result.message ?? "") // "" when valid
 ### Getting started
 
 - <doc:GettingStarted>
+- <doc:ValidationInMVVM>
 
 ### Core types
 
