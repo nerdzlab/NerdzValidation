@@ -7,11 +7,18 @@
 
 import Foundation
 
+/// Passes when the string matches a regular expression pattern.
 public class RegexValidationRule: ValidationRule {
-    
+
+    /// The regular expression pattern to match against.
     public let pattern: String
+    /// The message returned when the string does not match.
     public let message: String
-    
+
+    /// Creates the rule.
+    /// - Parameters:
+    ///   - pattern: The regular expression pattern.
+    ///   - message: Optional message overriding the default.
     public init(pattern: String, message: String? = nil) {
         self.pattern = pattern
         self.message = message ?? "String do not match regular expression: `\(pattern)`"

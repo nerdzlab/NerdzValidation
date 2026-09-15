@@ -7,12 +7,23 @@
 
 import Foundation
 
+/// Evaluates several rules together and reports a single combined result.
+///
+/// When more than one rule fails, their messages are merged into one bulleted string, unless
+/// ``shouldCombineErrorMessages`` is `false` or an overriding `message` was supplied.
 public class CombinedValidationRule: ValidationRule {
-    
+
+    /// The rules evaluated in order.
     public let rules: [ValidationRule]
+    /// Whether failing messages are merged into one string.
     public let shouldCombineErrorMessages: Bool
     private let message: String?
-    
+
+    /// Creates the rule.
+    /// - Parameters:
+    ///   - rules: The rules to evaluate.
+    ///   - shouldCombineErrorMessages: Whether to merge failing messages.
+    ///   - message: Optional message replacing individual messages when any rule fails.
     public init(rules: [ValidationRule], shouldCombineErrorMessages: Bool, message: String? = nil) {
         self.rules = rules
         self.shouldCombineErrorMessages = shouldCombineErrorMessages
