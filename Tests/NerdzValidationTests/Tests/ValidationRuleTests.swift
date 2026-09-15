@@ -35,11 +35,12 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenEmptyWithCustomMessageShouldReturnCustomMessage() {
-            let rule = NotEmptyValidationRule(message: "Required")
+            let customMessage = "Required"
+            let rule = NotEmptyValidationRule(message: customMessage)
 
             let result = rule.validate("")
 
-            #expect(result.message == "Required")
+            #expect(result.message == customMessage)
         }
 
         @Test func testWhenEmptyWithNoMessageShouldReturnDefaultMessage() {
@@ -81,11 +82,12 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenInvalidWithCustomMessageShouldReturnCustomMessage() {
-            let rule = IsEmailValidationRule(message: "Bad email")
+            let customMessage = "Bad email"
+            let rule = IsEmailValidationRule(message: customMessage)
 
             let result = rule.validate("nope")
 
-            #expect(result.message == "Bad email")
+            #expect(result.message == customMessage)
         }
 
         @Test func testWhenEmailEmbeddedInOtherTextShouldBeInvalid() {
@@ -128,11 +130,12 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenInvalidWithCustomMessageShouldReturnCustomMessage() {
-            let rule = IsPhoneValidationRule(message: "Bad phone")
+            let customMessage = "Bad phone"
+            let rule = IsPhoneValidationRule(message: customMessage)
 
             let result = rule.validate("abc")
 
-            #expect(result.message == "Bad phone")
+            #expect(result.message == customMessage)
         }
     }
 
@@ -174,11 +177,12 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenInvalidShouldIncludePatternInMessage() {
-            let rule = RegexValidationRule(pattern: "^x$")
+            let pattern = "^x$"
+            let rule = RegexValidationRule(pattern: pattern)
 
             let result = rule.validate("y")
 
-            #expect(result.message?.contains("^x$") == true)
+            #expect(result.message?.contains(pattern) == true)
         }
     }
 
@@ -226,15 +230,17 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenOutOfBoundsWithCustomMessagesShouldReturnThem() {
+            let lowerMessage = "too short"
+            let upperMessage = "too long"
             let rule = LengthRangeValidationRule(
                 lowerBound: 2,
                 upperBound: 4,
-                lowerBoundMessage: "too short",
-                upperBoundMessage: "too long"
+                lowerBoundMessage: lowerMessage,
+                upperBoundMessage: upperMessage
             )
 
-            #expect(rule.validate("a").message == "too short")
-            #expect(rule.validate("abcde").message == "too long")
+            #expect(rule.validate("a").message == lowerMessage)
+            #expect(rule.validate("abcde").message == upperMessage)
         }
     }
 
@@ -250,12 +256,13 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenClosureReturnsFalseShouldBeInvalidWithMessage() {
-            let rule = ByClosureValidationRule(closure: { _ in false }, message: "nope")
+            let customMessage = "nope"
+            let rule = ByClosureValidationRule(closure: { _ in false }, message: customMessage)
 
             let result = rule.validate("x")
 
             #expect(result.isValid == false)
-            #expect(result.message == "nope")
+            #expect(result.message == customMessage)
         }
 
         @Test func testWhenNoMessageShouldReturnDefaultMessage() {
@@ -267,12 +274,13 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenValidatingShouldPassTextToClosure() {
+            let input = "payload"
             var captured = ""
             let rule = ByClosureValidationRule(closure: { captured = $0; return true })
 
-            _ = rule.validate("payload")
+            _ = rule.validate(input)
 
-            #expect(captured == "payload")
+            #expect(captured == input)
         }
     }
 }

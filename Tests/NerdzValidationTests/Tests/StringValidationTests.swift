@@ -59,15 +59,19 @@ struct StringValidationTests {
     struct VariadicValidateTests {
 
         @Test func testWhenMultipleRulesFailShouldMergeMessages() {
-            // Arrange, Act
+            // Arrange
+            let notEmptyMessage = "empty"
+            let emailMessage = "email"
+
+            // Act
             let result = "".nzv.validate(
-                with: NotEmptyValidationRule(message: "empty"),
-                IsEmailValidationRule(message: "email")
+                with: NotEmptyValidationRule(message: notEmptyMessage),
+                IsEmailValidationRule(message: emailMessage)
             )
 
             // Assert
             #expect(result.isValid == false)
-            #expect(result.message == "- empty\n- email\n")
+            #expect(result.message == "- \(notEmptyMessage)\n- \(emailMessage)\n")
         }
     }
 

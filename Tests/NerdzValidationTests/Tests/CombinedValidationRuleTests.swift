@@ -29,36 +29,41 @@ struct CombinedValidationRuleTests {
         }
 
         @Test func testWhenSingleRuleFailsShouldReturnThatMessage() {
+            let message = "only"
             let rule = CombinedValidationRule(
-                rules: [TestData.passingRule(), TestData.failingRule("only")],
+                rules: [TestData.passingRule(), TestData.failingRule(message)],
                 shouldCombineErrorMessages: true
             )
 
             let result = rule.validate("x")
 
-            #expect(result.message == "only")
+            #expect(result.message == message)
         }
 
         @Test func testWhenMultipleRulesFailAndCombiningEnabledShouldMergeMessages() {
+            let firstMessage = "one"
+            let secondMessage = "two"
             let rule = CombinedValidationRule(
-                rules: [TestData.failingRule("one"), TestData.failingRule("two")],
+                rules: [TestData.failingRule(firstMessage), TestData.failingRule(secondMessage)],
                 shouldCombineErrorMessages: true
             )
 
             let result = rule.validate("x")
 
-            #expect(result.message == "- one\n- two\n")
+            #expect(result.message == "- \(firstMessage)\n- \(secondMessage)\n")
         }
 
         @Test func testWhenMultipleRulesFailAndCombiningDisabledShouldReturnFirstMessage() {
+            let firstMessage = "one"
+            let secondMessage = "two"
             let rule = CombinedValidationRule(
-                rules: [TestData.failingRule("one"), TestData.failingRule("two")],
+                rules: [TestData.failingRule(firstMessage), TestData.failingRule(secondMessage)],
                 shouldCombineErrorMessages: false
             )
 
             let result = rule.validate("x")
 
-            #expect(result.message == "one")
+            #expect(result.message == firstMessage)
         }
     }
 
@@ -66,15 +71,16 @@ struct CombinedValidationRuleTests {
     struct OverridingMessageTests {
 
         @Test func testWhenMessageSetAndRuleFailsShouldReturnOverride() {
+            let overrideMessage = "override"
             let rule = CombinedValidationRule(
                 rules: [TestData.failingRule("one"), TestData.failingRule("two")],
                 shouldCombineErrorMessages: true,
-                message: "override"
+                message: overrideMessage
             )
 
             let result = rule.validate("x")
 
-            #expect(result.message == "override")
+            #expect(result.message == overrideMessage)
         }
 
         @Test func testWhenMessageSetAndAllRulesPassShouldBeValid() {

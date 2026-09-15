@@ -63,24 +63,27 @@ struct RulesContainerTests {
     struct CustomRuleTests {
 
         @Test func testWhenContainerMessageSetShouldOverrideCombinedOutput() {
+            let overrideMessage = "Please enter a valid email"
+
             let result = "".nzv
                 .combine()
                 .notEmpty()
                 .isEmail()
-                .validate(with: "Please enter a valid email")
+                .validate(with: overrideMessage)
 
-            #expect(result.message == "Please enter a valid email")
+            #expect(result.message == overrideMessage)
         }
 
         @Test func testWhenCustomRuleAppendedShouldBeApplied() {
             // Arrange
-            let alwaysFail = ByClosureValidationRule(closure: { _ in false }, message: "custom fail")
+            let customMessage = "custom fail"
+            let alwaysFail = ByClosureValidationRule(closure: { _ in false }, message: customMessage)
 
             // Act
             let result = "x".nzv.combine().validate(with: alwaysFail).validate()
 
             // Assert
-            #expect(result.message == "custom fail")
+            #expect(result.message == customMessage)
         }
     }
 }
