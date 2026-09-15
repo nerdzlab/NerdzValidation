@@ -5,7 +5,10 @@ All notable changes to NerdzValidation are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0]
+## [3.0.0]
+
+This is a major release. It contains breaking changes: see Removed (CocoaPods) and Behavior
+change (regex full matching) below.
 
 ### Added
 - Array based `validate(with rules: [ValidationRule], shouldCombineErrorMessages:message:)` overload on the `.nzv` String namespace, so pre-built rule arrays (for example vended by a use case) can be validated without a variadic call. Error messages are not merged by default.

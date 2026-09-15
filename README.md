@@ -23,7 +23,7 @@ NerdzValidation is distributed through Swift Package Manager. Add the package to
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/nerdzlab/NerdzValidation.git", from: "2.1.0")
+    .package(url: "https://github.com/nerdzlab/NerdzValidation.git", from: "3.0.0")
 ]
 ```
 
