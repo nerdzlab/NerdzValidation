@@ -10,7 +10,7 @@ import Foundation
 /// Passes when the string length (in UTF-16 units) falls within the configured bounds.
 ///
 /// Both bounds are inclusive and optional. Provide only one to check a single side.
-public class LengthRangeValidationRule: ValidationRule {
+public final class LengthRangeValidationRule: ValidationRule {
 
     /// The message returned when the string is shorter than ``lowerBound``.
     public let lowerBoundMessage: String?

@@ -19,7 +19,11 @@ import Foundation
 ///     }
 /// }
 /// ```
-public protocol ValidationRule {
+///
+/// - Note: `ValidationRule` refines `Sendable` so rules can be shared across concurrency
+///   isolation boundaries (for example, held by a `@MainActor` view model). Custom rules must
+///   therefore be safe to use concurrently, which is naturally the case for a pure predicate.
+public protocol ValidationRule: Sendable {
     /// Validates the given text and returns the outcome.
     ///
     /// - Parameter text: The string to validate.
