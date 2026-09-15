@@ -27,13 +27,15 @@ public class RegexValidationRule: ValidationRule {
     public func validate(_ text: String) -> ValidationResult {
         do {
             let regex = try NSRegularExpression(pattern: pattern)
-            let results = regex.matches(in: text, range: NSRange(location: 0, length: text.utf16.count))
-            
-            if results.count == 1 {
+            let fullRange = NSRange(location: 0, length: text.utf16.count)
+
+            // The string is valid only when the pattern matches it in full, so trailing or
+            // leading text that does not belong to the pattern is rejected.
+            if let match = regex.firstMatch(in: text, range: fullRange), match.range == fullRange {
                 return .valid
             }
             else {
-                return.invalid(message: message)
+                return .invalid(message: message)
             }
         }
         catch {

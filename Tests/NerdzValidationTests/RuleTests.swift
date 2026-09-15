@@ -128,6 +128,22 @@ struct RegexValidationRuleTests {
         let rule = RegexValidationRule(pattern: "^x$")
         #expect(rule.validate("y").message?.contains("^x$") == true)
     }
+
+    @Test("Trailing text that does not match the pattern is rejected")
+    func requiresFullMatch() {
+        // Pattern matches "12" but not the trailing "a"; the whole string must match.
+        #expect(RegexValidationRule(pattern: "[0-9]+").validate("12a").isValid == false)
+    }
+
+    @Test("A string that fully matches an unanchored pattern is valid")
+    func fullMatchUnanchored() {
+        #expect(RegexValidationRule(pattern: "[0-9]+").validate("123").isValid)
+    }
+
+    @Test("Embedded email inside other text is rejected")
+    func emailMustMatchWholeString() {
+        #expect(IsEmailValidationRule().validate("hello a@b.io there").isValid == false)
+    }
 }
 
 @Suite("LengthRangeValidationRule")
