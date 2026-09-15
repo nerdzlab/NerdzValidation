@@ -89,6 +89,24 @@ public class RulesContainer {
         validate(with: IsURLValidationRule(message: message))
     }
 
+    /// Adds a rule that passes when at least one of the given rules passes.
+    /// - Parameters:
+    ///   - rules: The rules to evaluate as an any-of group.
+    ///   - message: Optional message returned when every rule in the group fails.
+    /// - Returns: The same container, so calls can be chained.
+    public func any(of rules: [ValidationRule], message: String? = nil) -> Self {
+        validate(with: OrValidationRule(rules: rules, message: message))
+    }
+
+    /// Adds a rule that inverts another rule: it passes when `rule` fails.
+    /// - Parameters:
+    ///   - rule: The rule to invert.
+    ///   - message: Optional message returned when `rule` passes and this check therefore fails.
+    /// - Returns: The same container, so calls can be chained.
+    public func not(_ rule: ValidationRule, message: String? = nil) -> Self {
+        validate(with: NotValidationRule(rule, message: message))
+    }
+
     /// Adds a rule that passes when the closure returns `true`.
     /// - Parameters:
     ///   - closure: The predicate to evaluate against the string.

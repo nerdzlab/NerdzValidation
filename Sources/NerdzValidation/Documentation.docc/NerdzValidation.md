@@ -44,6 +44,8 @@ print(result.message ?? "") // "" when valid
 - ``LengthRangeValidationRule``
 - ``ByClosureValidationRule``
 - ``CombinedValidationRule``
+- ``OrValidationRule``
+- ``NotValidationRule``
 
 ### Extending String
 

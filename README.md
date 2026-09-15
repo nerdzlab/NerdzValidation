@@ -11,6 +11,12 @@ NerdzValidation lets you validate text through a fluent `.nzv` namespace on `Str
 run a single rule, combine several rules, and control how error messages are reported. Every
 rule conforms to a tiny `ValidationRule` protocol, so writing your own is trivial.
 
+## Requirements
+
+The library runs on iOS 12 and later (and any Apple platform, since it depends only on
+Foundation). Building it requires Xcode 15 or later (Swift tools 5.9), which the Swift Testing
+based test suite needs. The runtime deployment target is unaffected.
+
 ## Installation
 
 ### Swift Package Manager
@@ -129,6 +135,26 @@ func makeURLValidationRules() -> [ValidationRule] {
 }
 
 let result = urlText.nzv.validate(with: makeURLValidationRules())
+```
+
+### Any-of and negation
+
+By default a chain requires every rule to pass. Use `any(of:)` to accept a value that matches
+at least one of several rules, and `not(_:)` to invert a rule.
+
+```swift
+// Accepts either a valid email or a valid phone.
+let contact = value.nzv
+    .combine()
+    .notEmpty()
+    .any(of: [IsEmailValidationRule(), IsPhoneValidationRule()])
+    .validate()
+
+// Rejects a reserved word.
+let username = value.nzv
+    .combine()
+    .not(ByClosureValidationRule(closure: { $0 == "admin" }, message: nil), message: "Reserved name")
+    .validate()
 ```
 
 ## Custom rules
