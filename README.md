@@ -196,6 +196,44 @@ submitButton.isEnabled = result.isValid
 `result.isValid` is `true` for a passing validation, and `result.message` holds the failure
 text (or `nil` when valid).
 
+## Using it with SwiftUI and MVVM
+
+The library is at its best when every validation rule lives in one place. Describe each field as
+an array of rules in a single provider, hand those rules to a view model, and let the view render
+whatever `ValidationResult` comes back.
+
+```swift
+// One place for all the rules.
+struct FormValidationUseCase {
+    func makeEmailRules() -> [ValidationRule] {
+        [
+            NotEmptyValidationRule(message: "Email is required"),
+            IsEmailValidationRule(message: "Enter a valid email address")
+        ]
+    }
+}
+
+// The view model validates through the array overload and exposes a result.
+@Observable
+@MainActor
+final class SignUpViewModel {
+    var email = ""
+    private(set) var emailValidation: ValidationResult = .valid
+
+    private let validation = FormValidationUseCase()
+
+    func validate() {
+        emailValidation = email.nzv.validate(with: validation.makeEmailRules())
+    }
+}
+
+// The view stays dumb: it only shows the message.
+Text(viewModel.emailValidation.message ?? "")
+```
+
+The full walkthrough (rules provider, view model, and view) is in the DocC article
+`Validation in MVVM`.
+
 ## Documentation
 
 Full API reference is available through DocC. In Xcode, choose Product, Build Documentation, or
