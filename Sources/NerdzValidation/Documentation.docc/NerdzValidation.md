@@ -39,6 +39,7 @@ print(result.message ?? "") // "" when valid
 - ``NotEmptyValidationRule``
 - ``IsEmailValidationRule``
 - ``IsPhoneValidationRule``
+- ``IsURLValidationRule``
 - ``RegexValidationRule``
 - ``LengthRangeValidationRule``
 - ``ByClosureValidationRule``

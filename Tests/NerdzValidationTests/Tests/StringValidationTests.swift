@@ -29,6 +29,11 @@ struct StringValidationTests {
             #expect("abc".nzv.isPhone().isValid == false)
         }
 
+        @Test func testWhenIsURLShortcutShouldValidateURL() {
+            #expect("https://example.com".nzv.isURL().isValid)
+            #expect("notaurl".nzv.isURL().isValid == false)
+        }
+
         @Test func testWhenMatchRegexShortcutShouldValidatePattern() {
             #expect("123".nzv.matchRegex("^[0-9]+$").isValid)
             #expect("abc".nzv.matchRegex("^[0-9]+$").isValid == false)
@@ -72,6 +77,66 @@ struct StringValidationTests {
             // Assert
             #expect(result.isValid == false)
             #expect(result.message == "- \(notEmptyMessage)\n- \(emailMessage)\n")
+        }
+    }
+
+    @Suite("Array validate")
+    struct ArrayValidateTests {
+
+        @Test func testWhenAllRulesInArrayPassShouldBeValid() {
+            // Arrange
+            let rules: [ValidationRule] = [NotEmptyValidationRule(), IsURLValidationRule()]
+
+            // Act
+            let result = "https://example.com".nzv.validate(with: rules)
+
+            // Assert
+            #expect(result.isValid)
+        }
+
+        @Test func testWhenRulesFailAndCombiningDefaultsFalseShouldReturnFirstMessage() {
+            // Arrange
+            let notEmptyMessage = "empty"
+            let urlMessage = "url"
+            let rules: [ValidationRule] = [
+                NotEmptyValidationRule(message: notEmptyMessage),
+                IsURLValidationRule(message: urlMessage)
+            ]
+
+            // Act
+            let result = "".nzv.validate(with: rules)
+
+            // Assert: default shouldCombineErrorMessages is false, so only the first message is returned.
+            #expect(result.isValid == false)
+            #expect(result.message == notEmptyMessage)
+        }
+
+        @Test func testWhenRulesFailAndCombiningEnabledShouldMergeMessages() {
+            // Arrange
+            let notEmptyMessage = "empty"
+            let urlMessage = "url"
+            let rules: [ValidationRule] = [
+                NotEmptyValidationRule(message: notEmptyMessage),
+                IsURLValidationRule(message: urlMessage)
+            ]
+
+            // Act
+            let result = "".nzv.validate(with: rules, shouldCombineErrorMessages: true)
+
+            // Assert
+            #expect(result.message == "- \(notEmptyMessage)\n- \(urlMessage)\n")
+        }
+
+        @Test func testWhenMessageOverrideProvidedShouldReturnOverride() {
+            // Arrange
+            let overrideMessage = "Please enter a valid URL"
+            let rules: [ValidationRule] = [NotEmptyValidationRule(), IsURLValidationRule()]
+
+            // Act
+            let result = "".nzv.validate(with: rules, message: overrideMessage)
+
+            // Assert
+            #expect(result.message == overrideMessage)
         }
     }
 

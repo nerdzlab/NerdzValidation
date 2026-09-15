@@ -51,7 +51,10 @@ public class RulesContainer {
 
     /// Appends a rule to the chain.
     ///
-    /// - Parameter rule: The ``ValidationRule`` to add.
+    /// - Parameters:
+    ///   - rule: The ``ValidationRule`` to add.
+    ///   - message: Currently unused. Reserved for a future per-rule message override; pass the
+    ///     message to the rule's own initializer instead.
     /// - Returns: The same container, so calls can be chained.
     public func validate(with rule: ValidationRule, message: String? = nil) -> Self {
         rules.append(rule)
@@ -77,6 +80,13 @@ public class RulesContainer {
     /// - Returns: The same container, so calls can be chained.
     public func isPhone(message: String? = nil) -> Self {
         validate(with: IsPhoneValidationRule(message: message))
+    }
+
+    /// Adds a rule requiring the string to be interpretable as a URL host.
+    /// - Parameter message: Optional message overriding the default.
+    /// - Returns: The same container, so calls can be chained.
+    public func isURL(message: String? = nil) -> Self {
+        validate(with: IsURLValidationRule(message: message))
     }
 
     /// Adds a rule that passes when the closure returns `true`.

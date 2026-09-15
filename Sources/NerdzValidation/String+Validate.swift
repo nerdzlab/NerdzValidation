@@ -21,6 +21,21 @@ public extension NZValidationExtensionData where Base == String {
         CombinedValidationRule(rules: rules, shouldCombineErrorMessages: shouldCombineErrorMessages, message: message).validate(base)
     }
 
+    /// Validates the string against a pre-built array of rules.
+    ///
+    /// Use this overload when the rules are assembled elsewhere (for example, vended by a use
+    /// case) and passed in as an array. Unlike the variadic overload, error messages are not
+    /// merged by default.
+    /// - Parameters:
+    ///   - rules: The validation rules to apply, evaluated in order.
+    ///   - shouldCombineErrorMessages: When `true`, failing messages are merged into one string.
+    ///     Defaults to `false`, returning only the first failing message.
+    ///   - message: Optional message replacing individual messages when any rule fails.
+    /// - Returns: The combined ``ValidationResult``.
+    func validate(with rules: [ValidationRule], shouldCombineErrorMessages: Bool = false, message: String? = nil) -> ValidationResult {
+        CombinedValidationRule(rules: rules, shouldCombineErrorMessages: shouldCombineErrorMessages, message: message).validate(base)
+    }
+
     /// Starts a chain of rules by returning a ``RulesContainer`` for this string.
     func combine() -> RulesContainer {
         RulesContainer(text: base)
@@ -42,6 +57,12 @@ public extension NZValidationExtensionData where Base == String {
     /// - Parameter message: Optional message overriding the default.
     func isPhone(message: String? = nil) -> ValidationResult {
         IsPhoneValidationRule(message: message).validate(base)
+    }
+
+    /// Validates that the string can be interpreted as a URL host.
+    /// - Parameter message: Optional message overriding the default.
+    func isURL(message: String? = nil) -> ValidationResult {
+        IsURLValidationRule(message: message).validate(base)
     }
 
     /// Validates the string with a custom closure.
