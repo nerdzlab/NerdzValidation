@@ -62,6 +62,18 @@ struct CombinedValidationRuleTests {
         )
         #expect(rule.validate("x").isValid)
     }
+
+    @Test("Each rule is evaluated exactly once, even with a container message set")
+    func evaluatesEachRuleOnce() {
+        var callCount = 0
+        let counting = ByClosureValidationRule(closure: { _ in
+            callCount += 1
+            return false
+        }, message: "fail")
+        let rule = CombinedValidationRule(rules: [counting], shouldCombineErrorMessages: true, message: "override")
+        _ = rule.validate("x")
+        #expect(callCount == 1)
+    }
 }
 
 @Suite("RulesContainer")

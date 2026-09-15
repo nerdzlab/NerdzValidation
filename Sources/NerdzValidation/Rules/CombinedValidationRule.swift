@@ -31,34 +31,34 @@ public class CombinedValidationRule: ValidationRule {
     }
     
     public func validate(_ text: String) -> ValidationResult {
-        if let message = message, rules.contains(where: { !$0.validate(text).isValid }) {
+        // Evaluate every rule exactly once and reuse the results below.
+        let results = rules.map { $0.validate(text) }
+
+        if let message = message, results.contains(where: { !$0.isValid }) {
+            return .invalid(message: message)
+        }
+
+        let messages: [String] = results.compactMap {
+            if case .invalid(let message) = $0 {
+                return message
+            }
+            else {
+                return nil
+            }
+        }
+
+        if messages.isEmpty {
+            return .valid
+        }
+        else if let message = messages.first, messages.count == 1 || !shouldCombineErrorMessages {
             return .invalid(message: message)
         }
         else {
-            let messages: [String] = rules.compactMap {
-                let result = $0.validate(text)
-                
-                if case .invalid(let message) = result {
-                    return message
-                }
-                else {
-                    return nil
-                }
+            let message = messages.reduce(into: "") {
+                $0 += "- \($1)\n"
             }
-            
-            if messages.isEmpty {
-                return .valid
-            }
-            else if let message = messages.first, messages.count == 1 || !shouldCombineErrorMessages {
-                return .invalid(message: message)
-            }
-            else {
-                let message = messages.reduce(into: "") {
-                    $0 += "- \($1)\n"
-                }
-                
-                return .invalid(message: message)
-            }
+
+            return .invalid(message: message)
         }
     }
 }
