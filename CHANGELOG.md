@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0]
 
 ### Added
+- Array based `validate(with rules: [ValidationRule], shouldCombineErrorMessages:message:)` overload on the `.nzv` String namespace, so pre-built rule arrays (for example vended by a use case) can be validated without a variadic call. Error messages are not merged by default.
+- `IsURLValidationRule` plus `.nzv.isURL()` and the container `isURL()` method, validating that a string can be interpreted as a URL host.
 - Rewritten README that documents the real `.nzv` API with working installation, quick start, rule table, and usage examples.
 - Swift Testing target (`NerdzValidationTests`) covering every rule, the rules container, the result type, and the `.nzv` String extension (around 99% line coverage).
 - DocC documentation catalog with a landing page, a Getting Started article, and reference docs on all public symbols.

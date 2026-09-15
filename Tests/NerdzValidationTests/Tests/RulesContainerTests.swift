@@ -57,6 +57,11 @@ struct RulesContainerTests {
 
             #expect(result.isValid == false)
         }
+
+        @Test func testWhenConvenienceURLRuleChainedShouldValidateURL() {
+            #expect("https://example.com".nzv.combine().notEmpty().isURL().validate().isValid)
+            #expect("notaurl".nzv.combine().notEmpty().isURL().validate().isValid == false)
+        }
     }
 
     @Suite("Custom rules and messages")

@@ -69,6 +69,7 @@ container returned by `combine()`.
 | Not empty | `.nzv.notEmpty()` | `.notEmpty()` | "String should not be empty" |
 | Email | `.nzv.isEmail()` | `.isEmail()` | "Invalid email address" |
 | Phone | `.nzv.isPhone()` | `.isPhone()` | (phone number message) |
+| URL | `.nzv.isURL()` | `.isURL()` | "Invalid URL" |
 | Regex | `.nzv.matchRegex(_:)` | `.matchRegex(_:)` | "String do not match regular expression: ..." |
 | Length below | `.nzv.lengthLessThan(_:)` | `.lengthLessThan(_:)` | "String should have less than N characters" |
 | Length above | `.nzv.lengthHigherThan(_:)` | `.lengthHigherThan(_:)` | "String should have more than N characters" |
@@ -111,6 +112,23 @@ let result = value.nzv
     .notEmpty()
     .isEmail()
     .validate(with: "Please enter a valid email address")
+```
+
+### Validating against a pre-built array of rules
+
+When the rules are assembled elsewhere (for example, vended by a use case or view model), pass
+them as an array. Error messages are not merged by default, so only the first failing message
+is returned. Pass `shouldCombineErrorMessages: true` to merge them.
+
+```swift
+func makeURLValidationRules() -> [ValidationRule] {
+    [
+        NotEmptyValidationRule(message: "Field should not be empty"),
+        IsURLValidationRule(message: "Invalid URL")
+    ]
+}
+
+let result = urlText.nzv.validate(with: makeURLValidationRules())
 ```
 
 ## Custom rules
