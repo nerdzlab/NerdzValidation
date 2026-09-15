@@ -274,13 +274,14 @@ struct ValidationRuleTests {
         }
 
         @Test func testWhenValidatingShouldPassTextToClosure() {
+            // The closure passes only when it receives exactly this input, which proves the
+            // validated text is forwarded to it (without capturing mutable state).
             let input = "payload"
-            var captured = ""
-            let rule = ByClosureValidationRule(closure: { captured = $0; return true })
+            let rule = ByClosureValidationRule(closure: { $0 == input })
 
-            _ = rule.validate(input)
+            let result = rule.validate(input)
 
-            #expect(captured == input)
+            #expect(result.isValid)
         }
     }
 }

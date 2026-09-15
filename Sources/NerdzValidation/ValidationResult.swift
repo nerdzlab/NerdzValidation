@@ -10,7 +10,7 @@ import Foundation
 /// The outcome of validating a string.
 ///
 /// Use ``isValid`` for a quick boolean check and ``message`` to display the failure reason.
-public enum ValidationResult {
+public enum ValidationResult: Sendable, Equatable {
     /// The string passed validation.
     case valid
     /// The string failed validation, optionally carrying a human readable reason.

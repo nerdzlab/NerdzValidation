@@ -8,9 +8,12 @@
 import Foundation
 
 /// Passes when a custom closure returns `true` for the string.
-public class ByClosureValidationRule: ValidationRule {
+public final class ByClosureValidationRule: ValidationRule {
     /// A predicate that returns `true` when the string is valid.
-    public typealias Closure = (String) -> Bool
+    ///
+    /// The closure is `@Sendable` so the rule can cross concurrency isolation boundaries. Keep
+    /// it a pure predicate: do not capture mutable state.
+    public typealias Closure = @Sendable (String) -> Bool
 
     private enum Constants {
         static let defaultMessage = "String is invalid"

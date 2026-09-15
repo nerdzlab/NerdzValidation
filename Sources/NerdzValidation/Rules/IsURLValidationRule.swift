@@ -12,7 +12,7 @@ import Foundation
 /// Trims surrounding whitespace, rejects empty and whitespace-containing strings, and falls
 /// back to a dotted-host heuristic when `URL(string:)` does not expose a host (Apple's URL
 /// parser is permissive about schemes but strict about hosts).
-public class IsURLValidationRule: ValidationRule {
+public final class IsURLValidationRule: ValidationRule {
 
     private enum Constants {
         static let defaultMessage = "Invalid URL"

@@ -97,9 +97,9 @@ struct CombinedValidationRuleTests {
 
         @Test func testWhenMessageSetShouldEvaluateEachRuleOnce() {
             // Arrange
-            var callCount = 0
+            let counter = CallCounter()
             let counting = ByClosureValidationRule(closure: { _ in
-                callCount += 1
+                counter.increment()
                 return false
             }, message: "fail")
             let rule = CombinedValidationRule(rules: [counting], shouldCombineErrorMessages: true, message: "override")
@@ -108,7 +108,7 @@ struct CombinedValidationRuleTests {
             _ = rule.validate("x")
 
             // Assert
-            #expect(callCount == 1)
+            #expect(counter.count == 1)
         }
     }
 }

@@ -11,7 +11,7 @@ import Foundation
 ///
 /// When more than one rule fails, their messages are merged into one bulleted string, unless
 /// ``shouldCombineErrorMessages`` is `false` or an overriding `message` was supplied.
-public class CombinedValidationRule: ValidationRule {
+public final class CombinedValidationRule: ValidationRule {
 
     /// The rules evaluated in order.
     public let rules: [ValidationRule]

@@ -8,7 +8,7 @@
 import Foundation
 
 /// Passes when the string looks like a phone number.
-public class IsPhoneValidationRule: RegexValidationRule {
+public final class IsPhoneValidationRule: RegexValidationRule, @unchecked Sendable {
 
     private enum Constants {
         static let pattern = "^[0-9+]{0,1}+[0-9\\ \\(\\)]{5,30}$"

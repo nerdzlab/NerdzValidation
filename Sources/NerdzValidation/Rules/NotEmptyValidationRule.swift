@@ -8,7 +8,7 @@
 import Foundation
 
 /// Passes when the string is not empty.
-public class NotEmptyValidationRule: ValidationRule {
+public final class NotEmptyValidationRule: ValidationRule {
     private enum Constants {
         static let defaultMessage = "String should not be empty"
     }

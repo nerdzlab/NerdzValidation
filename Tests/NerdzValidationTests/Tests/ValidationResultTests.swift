@@ -36,4 +36,11 @@ struct ValidationResultTests {
         #expect(result.isValid == false)
         #expect(result.message == nil)
     }
+
+    @Test func testWhenComparedShouldSupportEquatable() {
+        #expect(ValidationResult.valid == .valid)
+        #expect(ValidationResult.invalid(message: "a") == .invalid(message: "a"))
+        #expect(ValidationResult.invalid(message: "a") != .invalid(message: "b"))
+        #expect(ValidationResult.valid != .invalid(message: nil))
+    }
 }
