@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ValidationRule` now refines `Sendable`. Custom rules conforming to it must also be `Sendable` (a pure predicate rule already is). `ByClosureValidationRule`'s closure is now `@Sendable`.
 - `Package.swift` `swift-tools-version` raised from 5.3 to 5.9 to support Swift Testing. The runtime deployment target is unchanged (tests are not shipped). Building the package now requires Xcode 15 or later.
 
+### Removed
+- CocoaPods support. The podspec has been deleted and the library is now distributed through Swift Package Manager only. Projects that installed NerdzValidation with CocoaPods must migrate to SPM.
+
 ### Fixed
 - `IsPhoneValidationRule` returned "Invalid email address" as its default failure message. It now returns "Invalid phone number".
 - `CombinedValidationRule` evaluated each rule twice when a container level message was set. Rules are now evaluated exactly once. Output is unchanged.

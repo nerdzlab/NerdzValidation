@@ -3,7 +3,6 @@
 > Validate strings declaratively by composing small, reusable validation rules.
 
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
-[![CocoaPods](https://img.shields.io/badge/pod-NerdzValidation-blue.svg)](https://cocoapods.org)
 [![Platform](https://img.shields.io/badge/platform-iOS%2012%2B-lightgrey.svg)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 
@@ -19,9 +18,8 @@ based test suite needs. The runtime deployment target is unaffected.
 
 ## Installation
 
-### Swift Package Manager
-
-Add the package to your `Package.swift`:
+NerdzValidation is distributed through Swift Package Manager. Add the package to your
+`Package.swift`:
 
 ```swift
 dependencies: [
@@ -30,14 +28,6 @@ dependencies: [
 ```
 
 Or in Xcode, choose File, Add Package Dependencies, and paste the repository URL.
-
-### CocoaPods
-
-Add this line to your `Podfile` and run `pod install`:
-
-```ruby
-pod 'NerdzValidation'
-```
 
 ## Quick start
 
