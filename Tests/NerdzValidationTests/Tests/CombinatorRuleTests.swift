@@ -31,12 +31,14 @@ struct CombinatorRuleTests {
         }
 
         @Test func testWhenAllRulesFailShouldReturnFirstMessage() {
-            let rule = OrValidationRule(rules: [TestData.failingRule("first"), TestData.failingRule("second")])
+            let firstMessage = "first"
+            let secondMessage = "second"
+            let rule = OrValidationRule(rules: [TestData.failingRule(firstMessage), TestData.failingRule(secondMessage)])
 
             let result = rule.validate("x")
 
             #expect(result.isValid == false)
-            #expect(result.message == "first")
+            #expect(result.message == firstMessage)
         }
 
         @Test func testWhenAllRulesFailWithOverrideShouldReturnOverride() {
@@ -64,12 +66,13 @@ struct CombinatorRuleTests {
         }
 
         @Test func testWhenWrappedRulePassesShouldBeInvalid() {
-            let rule = NotValidationRule(TestData.passingRule(), message: "should not match")
+            let message = "should not match"
+            let rule = NotValidationRule(TestData.passingRule(), message: message)
 
             let result = rule.validate("x")
 
             #expect(result.isValid == false)
-            #expect(result.message == "should not match")
+            #expect(result.message == message)
         }
     }
 
@@ -86,12 +89,14 @@ struct CombinatorRuleTests {
         }
 
         @Test func testWhenNotChainedShouldInvertRule() {
+            let message = "must be empty"
+
             let result = "not empty".nzv
                 .combine()
-                .not(NotEmptyValidationRule(), message: "must be empty")
+                .not(NotEmptyValidationRule(), message: message)
                 .validate()
 
-            #expect(result.message == "must be empty")
+            #expect(result.message == message)
         }
     }
 }
