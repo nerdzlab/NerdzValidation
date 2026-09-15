@@ -21,12 +21,20 @@ import Foundation
 /// ```
 public class RulesContainer {
 
+    // MARK: - Properties(private)
+
     private var rules: [ValidationRule] = []
     private let text: String
 
+    // MARK: - Life cycle
+
+    /// Creates a container for the given text.
+    /// - Parameter text: The string that the collected rules validate.
     init(text: String) {
         self.text = text
     }
+
+    // MARK: - Methods(public)
 
     /// Evaluates all collected rules and returns the combined result.
     ///
