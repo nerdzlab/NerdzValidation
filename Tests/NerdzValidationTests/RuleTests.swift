@@ -93,10 +93,9 @@ struct IsPhoneValidationRuleTests {
         #expect(IsPhoneValidationRule().validate(phone).isValid == false)
     }
 
-    // NOTE: documents current (buggy) default message. fix/is-phone-message flips this.
-    @Test("Current default message (documents existing behavior)")
-    func currentDefaultMessage() {
-        #expect(IsPhoneValidationRule().validate("abc").message == "Invalid email address")
+    @Test("Default message on failure")
+    func defaultMessage() {
+        #expect(IsPhoneValidationRule().validate("abc").message == "Invalid phone number")
     }
 
     @Test("Custom message on failure")

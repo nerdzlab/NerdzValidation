@@ -17,6 +17,6 @@ public class IsPhoneValidationRule: RegexValidationRule {
     /// Creates the rule.
     /// - Parameter message: Optional message overriding the default.
     public init(message: String? = nil) {
-        super.init(pattern: Constants.pattern, message: message ?? "Invalid email address")
+        super.init(pattern: Constants.pattern, message: message ?? "Invalid phone number")
     }
 }
