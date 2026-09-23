@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Swift version
+      - name: Show environment
         run: swift --version
 
       - name: Build
@@ -28,4 +28,4 @@ jobs:
         run: swift test
 
       - name: Build with complete strict concurrency
-        run: swift build -Xswiftc -strict-concurrency=complete
+        run: swift build --build-tests -Xswiftc -strict-concurrency=complete
