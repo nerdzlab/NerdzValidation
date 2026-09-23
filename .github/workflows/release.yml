@@ -41,7 +41,9 @@ jobs:
 
   docs:
     name: Build and deploy DocC
-    runs-on: macos-15
+    # Unpinned, unlike the CI jobs, because DocC's symbol link disambiguation
+    # syntax moves with Xcode and the catalogs are authored against the current one.
+    runs-on: macos-latest
     permissions:
       pages: write
       id-token: write
@@ -95,6 +97,19 @@ jobs:
             echo "DocC reported diagnostics" >&2
             exit 1
           fi
+
+      - name: Add a root redirect
+        if: steps.catalog.outputs.found == 'true'
+        run: |
+          module_path="$(echo '${{ steps.catalog.outputs.module }}' | tr '[:upper:]' '[:lower:]')"
+          cat > _site/index.html <<HTML
+          <!doctype html>
+          <meta charset="utf-8">
+          <meta http-equiv="refresh" content="0; url=./documentation/$module_path/">
+          <link rel="canonical" href="./documentation/$module_path/">
+          <title>Documentation</title>
+          <a href="./documentation/$module_path/">Continue to the documentation</a>
+          HTML
 
       - name: Upload artifact
         if: steps.catalog.outputs.found == 'true'
