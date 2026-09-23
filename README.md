@@ -3,6 +3,7 @@
 > Validate strings declaratively by composing small, reusable validation rules.
 
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://nerdzlab.github.io/NerdzValidation/documentation/nerdzvalidation/)
 [![Platform](https://img.shields.io/badge/platform-iOS%2012%2B-lightgrey.svg)](https://developer.apple.com)
 [![License](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
 
