@@ -4,15 +4,10 @@ on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
-      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
-
-env:
-  MODULE: NerdzValidation
-  BUNDLE_ID: com.nerdzlab.NerdzValidation
 
 jobs:
   release:
@@ -23,11 +18,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Extract changelog section
-        id: changelog
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${GITHUB_REF_NAME}"
           awk -v v="$version" '
             $0 ~ "^## \\[" v "\\]" { found = 1; next }
             found && /^## \[/ { exit }
@@ -45,8 +41,7 @@ jobs:
 
   docs:
     name: Build and deploy DocC
-    runs-on: ubuntu-latest
-    container: swift:6.0-jammy
+    runs-on: macos-15
     permissions:
       pages: write
       id-token: write
@@ -57,33 +52,57 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Emit symbol graphs
+      - name: Show environment
         run: |
-          swift build \
-            -Xswiftc -emit-symbol-graph \
-            -Xswiftc -emit-symbol-graph-dir -Xswiftc .build/symbol-graphs
+          xcodebuild -version
+          swift --version
+
+      - name: Locate the documentation catalog
+        id: catalog
+        run: |
+          catalog="$(find Sources -maxdepth 3 -name '*.docc' -print -quit)"
+          if [ -z "$catalog" ]; then
+            echo "No DocC catalog found, skipping documentation." >&2
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          module="$(basename "$(dirname "$catalog")")"
+          echo "found=true" >> "$GITHUB_OUTPUT"
+          echo "path=$catalog" >> "$GITHUB_OUTPUT"
+          echo "module=$module" >> "$GITHUB_OUTPUT"
+
+      - name: Emit symbol graphs
+        if: steps.catalog.outputs.found == 'true'
+        run: >
+          swift build
+          -Xswiftc -emit-symbol-graph
+          -Xswiftc -emit-symbol-graph-dir -Xswiftc .build/symbol-graphs
 
       - name: Build documentation
+        if: steps.catalog.outputs.found == 'true'
         run: |
-          "$(dirname "$(command -v swift)")/docc" convert \
-            "Sources/$MODULE/Documentation.docc" \
-            --fallback-display-name "$MODULE" \
-            --fallback-bundle-identifier "$BUNDLE_ID" \
+          set -o pipefail
+          "$(xcrun --find docc)" convert \
+            "${{ steps.catalog.outputs.path }}" \
+            --fallback-display-name "${{ steps.catalog.outputs.module }}" \
+            --fallback-bundle-identifier "com.nerdzlab.${{ steps.catalog.outputs.module }}" \
             --additional-symbol-graph-dir .build/symbol-graphs \
             --output-path _site \
             --transform-for-static-hosting \
             --hosting-base-path "${GITHUB_REPOSITORY#*/}" \
             2>&1 | tee docc.log
-          if grep -qE "(^|[^/])(warning|error): " docc.log; then
+          if grep -iE '(^|[^/])(warning|error): ' docc.log; then
             echo "DocC reported diagnostics" >&2
             exit 1
           fi
 
       - name: Upload artifact
+        if: steps.catalog.outputs.found == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
       - name: Deploy to Pages
+        if: steps.catalog.outputs.found == 'true'
         id: deploy
         uses: actions/deploy-pages@v4
